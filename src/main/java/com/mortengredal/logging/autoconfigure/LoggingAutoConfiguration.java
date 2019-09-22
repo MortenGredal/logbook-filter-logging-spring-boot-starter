@@ -3,18 +3,18 @@ package com.mortengredal.logging.autoconfigure;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
-import com.mortengredal.logging.autoconfigure.config.CustomExceptionHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mortengredal.logging.autoconfigure.filter.RequestLoggingFilter;
 import com.mortengredal.logging.autoconfigure.filter.RequestTimingFilter;
 import com.mortengredal.logging.autoconfigure.filter.StatusCodeFilter;
 import com.mortengredal.logging.autoconfigure.logbook.LogbookCustomsFormatter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.logstash.logback.composite.ContextJsonProvider;
 import net.logstash.logback.composite.GlobalCustomFieldsJsonProvider;
 import net.logstash.logback.composite.loggingevent.*;
 import net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder;
 import net.logstash.logback.stacktrace.ShortenedThrowableConverter;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,10 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.zalando.logbook.BodyFilter;
 import org.zalando.logbook.HttpLogFormatter;
-import org.slf4j.MDC;
 
 import javax.servlet.Filter;
 
@@ -87,12 +85,6 @@ public class LoggingAutoConfiguration {
         return BodyFilter.merge(
                 defaultValue(),
                 replaceJsonStringProperty(properties.getBodyFilters(), "****"));
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(ResponseEntityExceptionHandler.class)
-    public CustomExceptionHandler customExceptionHandler(){
-        return new CustomExceptionHandler();
     }
 
     @Bean

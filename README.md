@@ -61,8 +61,8 @@ Logging output looks like this:
 
 #### Current issues  
 ~~The LoggingAutoConfiguration is unable to get the ${spring.application.name} and ${spring.cloud.client.ip-address}~~  
-  
+The naming of the configuration property path (sample.app) is pretty bad, should probably think of a new name
 #### Thanks to
-[Jhipster](https://www.jhipster.tech/) for providing the setup of switching between json and non-json by changing a property.  
+[Jhipster](https://www.jhipster.tech/) for providing the setup of switching between json and non-json by changing a single configuration property.  
 
 [zalando / logbook](https://github.com/zalando/logbook) for the logbook project
