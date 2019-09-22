@@ -11,7 +11,6 @@ public class MDCUtil {
     /**
      * Copy basic request info to MDC so it's accessible from the beginning of the request
      * This works both on all request results, 2xx, 5xx etc.
-     * @param request The inbound request
      */
     public static void addRequestInfoToMDC(HttpServletRequest request) {
         MDC.put("query_string", request.getQueryString());
@@ -36,6 +35,10 @@ public class MDCUtil {
             MDC.put("client_user", client_user);
         }
     }
+
+    /**
+     * Builds the complete request url e.g. http://localhost:8080/api/sayhello/exception/foo?pathparam=value1
+     */
     private static String getRequestUrl(HttpServletRequest request) {
         return String.format("%s://%s:%d%s%s%s",
                 request.getScheme(),
@@ -51,7 +54,8 @@ public class MDCUtil {
     }
 
     /**
-     * Adds the http_status if the request is successful
+     * Adds status code as http_status to MDC if not already present
+     * @param status http status code
      */
     public static void addHttpStatusIfNeeded(int status) {
         String http_status = MDC.get("http_status");
