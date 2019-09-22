@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.mortengredal.logging.autoconfigure.LoggingAutoConfiguration
