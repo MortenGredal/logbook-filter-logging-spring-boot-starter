@@ -1,6 +1,5 @@
 package com.mortengredal.logging.autoconfigure.util;
 
-import com.mortengredal.logging.autoconfigure.config.CustomExceptionHandler;
 import org.slf4j.MDC;
 import org.springframework.util.StringUtils;
 
@@ -53,8 +52,6 @@ public class MDCUtil {
 
     /**
      * Adds the http_status if the request is successful
-     * We only hadd it if successful because it is handled by the
-     * @see CustomExceptionHandler
      */
     public static void addHttpStatusIfNeeded(int status) {
         String http_status = MDC.get("http_status");

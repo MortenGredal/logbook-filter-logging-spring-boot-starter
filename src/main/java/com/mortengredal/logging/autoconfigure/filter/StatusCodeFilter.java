@@ -1,13 +1,14 @@
 package com.mortengredal.logging.autoconfigure.filter;
 
 import com.mortengredal.logging.autoconfigure.util.MDCUtil;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Order(3)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class StatusCodeFilter implements Filter {
 
     @Override
