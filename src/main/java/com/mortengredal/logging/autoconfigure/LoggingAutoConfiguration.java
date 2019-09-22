@@ -22,6 +22,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.zalando.logbook.BodyFilter;
 import org.zalando.logbook.HttpLogFormatter;
@@ -36,17 +38,25 @@ import static org.zalando.logbook.BodyFilters.replaceJsonStringProperty;
 @ConditionalOnClass(value = {HttpLogFormatter.class, Filter.class, MDC.class})
 @ConditionalOnProperty(value = "${sample.app.enable-logging}", matchIfMissing = true)
 @EnableConfigurationProperties(LoggngConfigurationProperties.class)
+@PropertySources({
+        @PropertySource(value = "${spring.application.name}", ignoreResourceNotFound = true),
+        @PropertySource(value = "${spring.cloud.client.ip-address}", ignoreResourceNotFound = true)
+})
 public class LoggingAutoConfiguration {
 
     private static final String CONSOLE_APPENDER_NAME = "CONSOLE";
-    @Value("${spring.application.name}")
+
     private String appName;
-    @Value("${spring.cloud.client.ip-address}")
+
     private String ipAddress;
     private final LoggngConfigurationProperties properties;
 
-    public LoggingAutoConfiguration(LoggngConfigurationProperties loggngConfigurationProperties) {
+    public LoggingAutoConfiguration(@Value("${spring.application.name}") String appName,
+                                    @Value("${spring.cloud.client.ip-address}")String ipAddress,
+                                    LoggngConfigurationProperties loggngConfigurationProperties) {
         this.properties = loggngConfigurationProperties;
+        this.appName = appName;
+        this.ipAddress = ipAddress;
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         if (loggngConfigurationProperties.isLogAsJson()){
             addJsonConsoleAppender(context);
