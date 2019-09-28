@@ -27,6 +27,7 @@ import org.springframework.context.annotation.PropertySources;
 import org.zalando.logbook.BodyFilter;
 import org.zalando.logbook.HttpLogFormatter;
 
+import javax.annotation.PropertyKey;
 import javax.servlet.Filter;
 
 import static org.zalando.logbook.BodyFilters.defaultValue;
@@ -36,10 +37,6 @@ import static org.zalando.logbook.BodyFilters.replaceJsonStringProperty;
 @ConditionalOnClass(value = {HttpLogFormatter.class, Filter.class, MDC.class})
 @ConditionalOnProperty(value = "${sample.app.enable-logging}", matchIfMissing = true)
 @EnableConfigurationProperties(LoggngConfigurationProperties.class)
-@PropertySources({
-        @PropertySource(value = "${spring.application.name}", ignoreResourceNotFound = true),
-        @PropertySource(value = "${spring.cloud.client.ip-address}", ignoreResourceNotFound = true)
-})
 public class LoggingAutoConfiguration {
 
     private static final String CONSOLE_APPENDER_NAME = "CONSOLE";
